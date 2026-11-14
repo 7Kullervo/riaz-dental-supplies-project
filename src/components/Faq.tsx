@@ -5,7 +5,7 @@ const faqs: [string, string][] = [
   ["Can I enquire about product availability?", "Yes. Send an enquiry through the quote form or contact page and we will respond with availability."],
   ["Where is your shop located?", `${site.address.join(" ")}`],
   ["How can I contact Riaz Dental Supplies?", "Use the Contact Us page, or visit the shop. Phone, email and WhatsApp details will be published here once confirmed by the owner."],
-  ["Do you offer delivery?", "[Editable: delivery policy to be confirmed by the business owner.]"],
+  ["Do you offer delivery?", "No. We do not offer delivery for now. Please enquire about collection options."],
   ["Can I request information about a particular brand?", "Yes. Mention the brand in your enquiry and we will let you know what we can offer."],
 ];
 export default function Faq() {

@@ -2,10 +2,11 @@ import type { Metadata } from "next";
 import { MapPin, Phone, Mail, MessageCircle, Clock } from "lucide-react";
 import { site } from "@/lib/site";
 import { getSiteContent, isPlaceholder } from "@/lib/content";
+import { intl } from "@/lib/phone";
 import EnquiryForm from "@/components/EnquiryForm";
 import ShopMap, { directionsUrl } from "@/components/ShopMap";
 
-export const metadata: Metadata = { title: "Contact Us", description: "Contact Riaz Dental Supplies or visit our shop at Ramzan Plaza, Bank Road, Saddar, Rawalpindi." };
+export const metadata: Metadata = { title: "Contact Us", description: "Contact Riaz Dental Supplies or visit us at Ramzan Plaza, Bank Rd, Saddar, Rawalpindi." };
 
 export const revalidate = 60;
 export default async function ContactPage() {
@@ -18,7 +19,7 @@ export default async function ContactPage() {
         <div className="space-y-6">
           <div className="flex gap-3"><MapPin className="mt-1 shrink-0 text-brand" aria-hidden />
             <address className="not-italic"><strong>Riaz Dental Supplies</strong>{site.address.map((l) => <div key={l}>{l}</div>)}</address></div>
-          <div className="flex gap-3"><Phone className="shrink-0 text-brand" aria-hidden />Phone: {sc.phone}{isPlaceholder(sc.phone) && <span className="text-xs text-muted"> (placeholder)</span>}</div>
+          <div className="flex gap-3"><Phone className="mt-1 shrink-0 text-brand" aria-hidden /><div className="space-y-1">{[sc.phone, sc.phone2].filter(Boolean).map((n) => <div key={n}>Phone: <a href={`tel:${intl(n)}`} className="font-semibold text-navy hover:text-brand">{n}</a>{isPlaceholder(n) && <span className="text-xs text-muted"> (placeholder)</span>}</div>)}</div></div>
           <div className="flex gap-3"><Mail className="shrink-0 text-brand" aria-hidden />Email: {sc.email}{isPlaceholder(sc.email) && <span className="text-xs text-muted"> (placeholder)</span>}</div>
           <div className="flex gap-3"><Clock className="shrink-0 text-brand" aria-hidden />{sc.hours}</div>
           <div className="flex flex-wrap items-center gap-3">

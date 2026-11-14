@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Download } from "lucide-react";
-import { availabilityLabel } from "@/lib/data";
+import { availabilityLabel, formatPrice } from "@/lib/data";
 import { getProducts, usingDemo } from "@/lib/content";
 import { Img, ProductCard, DemoBadge } from "@/components/ui";
 import JsonLd from "@/components/JsonLd";
@@ -42,7 +42,7 @@ export default async function ProductPage({ params }: { params: { slug: string }
           <h1 className="mt-1 text-3xl font-extrabold sm:text-4xl">{p.name}</h1>
           <p className="mt-3"><span className="rounded-full bg-mist px-3 py-1 text-sm font-semibold text-brand">{availabilityLabel[p.availability]}</span> {usingDemo() && <DemoBadge />}</p>
           {p.description && <p className="mt-4 whitespace-pre-line text-muted">{p.description}</p>}
-          <p className="mt-4 text-xl font-bold text-navy">{p.price ? `Rs ${p.price.toLocaleString()}` : "Price on request"}</p>
+          <p className="mt-4 text-xl font-bold text-navy">{p.price ? formatPrice(p.price) : "Price on request"}</p>
           <div className="mt-6 flex flex-wrap gap-3">
             <Link href={`/request-quote?product=${p.slug}`} className="btn-primary">Request a Quote</Link>
             {p.brochureUrl && <a href={p.brochureUrl} className="btn-outline" target="_blank" rel="noopener noreferrer"><Download size={16} aria-hidden />Download Brochure</a>}

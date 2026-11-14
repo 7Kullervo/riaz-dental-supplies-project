@@ -49,3 +49,6 @@ export const demoOffers: Offer[] = [
   { id: "1", title: "Demonstration Offer: Equipment Enquiry", description: "Placeholder offer. Replace with a real promotion from the admin dashboard.", expires: "2027-12-31", productSlug: "demo-dental-chair-unit" },
   { id: "2", title: "Demonstration Offer: Consumables", description: "Placeholder offer. No real discount is implied.", expires: "2027-12-31", productSlug: "demo-composite-material" },
 ];
+
+// Fixed locale so the server and the browser always print prices identically (avoids hydration mismatches).
+export const formatPrice = (n: number) => `Rs ${n.toLocaleString("en-US")}`;

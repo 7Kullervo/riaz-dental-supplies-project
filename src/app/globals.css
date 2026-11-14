@@ -11,3 +11,9 @@
   .btn-outline { @apply btn border border-navy text-navy hover:bg-navy hover:text-white; }
   .container-x { @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8; }
 }
+
+/* Printing (price list): hide site chrome and floating buttons */
+@media print {
+  header, footer, a[aria-label^="Chat with Riaz"] { display: none !important; }
+  body { background: #fff; }
+}

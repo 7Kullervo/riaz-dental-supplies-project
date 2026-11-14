@@ -145,7 +145,9 @@ export async function saveContent(fd: FormData) {
   if (whatsapp && (whatsapp.length < 8 || whatsapp.length > 15)) return done(P, "WhatsApp number must be 8 to 15 digits with country code, e.g. 923001234567.", false);
   const { data: cur } = await db.from("site_content").select("value").eq("key", "main").maybeSingle();
   const old = (cur?.value ?? {}) as Record<string, string>;
-  const value: Record<string, string> = { announcement: s(fd, "announcement", 200), overview: s(fd, "overview", 1500), mission: s(fd, "mission", 600), vision: s(fd, "vision", 600), phone: s(fd, "phone", 40), email, whatsapp, hours: s(fd, "hours", 300) };
+  const value: Record<string, string> = { announcement: s(fd, "announcement", 200), overview: s(fd, "overview", 1500), mission: s(fd, "mission", 600), vision: s(fd, "vision", 600), phone: s(fd, "phone", 40), phone2: s(fd, "phone2", 40), email, whatsapp, hours: s(fd, "hours", 300) };
+  const op = parseInt(s(fd, "hero_opacity", 3), 10);
+  value.heroOpacity = String(Number.isNaN(op) ? 45 : Math.min(100, Math.max(0, op)));
   for (const [field, input] of [["heroImage", "hero_image"], ["aboutImage", "about_image"], ["shopImage", "shop_image"]] as const) {
     const up = await upload(db, fd.get(input), "site", IMG);
     if (up && "error" in up) return done(P, up.error, false);

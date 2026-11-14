@@ -2,12 +2,13 @@
 export const site = {
   name: "Riaz Dental Supplies",
   announcement: "Your Trusted Partner in Dental Equipment & Supplies",
-  address: ["Shop # F4, Ramzan Plaza,", "Bank Road, Saddar,", "Rawalpindi, Pakistan."],
-  phone: "+92 XXX XXXXXXX", // PLACEHOLDER
+  address: ["First Floor, Ramzan Plaza,", "Bank Rd, Saddar,", "Rawalpindi, 46000, Pakistan."],
+  phone: "0319 4662181",
+  phone2: "0333 5535785",
   whatsapp: "", // PLACEHOLDER: digits only, e.g. 923001234567
   email: "info@example.com", // PLACEHOLDER
   hours: "Business hours to be confirmed", // PLACEHOLDER
-  mapsQuery: "Ramzan Plaza, Bank Road, Saddar, Rawalpindi, Pakistan",
+  mapsQuery: "Ramzan Plaza, Bank Rd, Saddar, Rawalpindi 46000, Pakistan",
 };
 export const categories = [
   { slug: "dental-chairs-units", name: "Dental Chairs & Units" },
@@ -22,6 +23,6 @@ export const categories = [
 ];
 export const navLinks = [
   { href: "/", label: "Home" }, { href: "/about", label: "About Us" },
-  { href: "/products", label: "Products", mega: true }, { href: "/brands", label: "Brands" },
+  { href: "/products", label: "Products", mega: true }, { href: "/price-list", label: "Price List" }, { href: "/brands", label: "Brands" },
   { href: "/offers", label: "Offers" }, { href: "/contact", label: "Contact Us" },
 ];

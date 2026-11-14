@@ -4,6 +4,7 @@ import { site } from "@/lib/site";
 import { getCategories, getProducts, getBrands, getSiteContent, getTestimonials, isPlaceholder, usingDemo } from "@/lib/content";
 import JsonLd from "@/components/JsonLd";
 import { baseUrl } from "@/lib/url";
+import { intl } from "@/lib/phone";
 import { Placeholder, Img, SectionHeading, ProductCard, DemoBadge } from "@/components/ui";
 import Faq from "@/components/Faq";
 import ShopMap, { directionsUrl } from "@/components/ShopMap";
@@ -20,26 +21,31 @@ const why = [
 export default async function Home() {
   const [cats, prods, brands, sc, tms] = await Promise.all([getCategories(), getProducts(), getBrands(), getSiteContent(), getTestimonials()]);
   const demo = usingDemo();
+  const heroOpacity = (Number.isNaN(Number(sc.heroOpacity)) ? 45 : Math.min(100, Math.max(0, Number(sc.heroOpacity)))) / 100;
   const featured = prods.filter((p) => p.featured).slice(0, 4);
   // Only verified details go into structured data: no ratings, reviews, hours or placeholder contact info.
   const ld = {
     "@context": "https://schema.org", "@type": "LocalBusiness", name: site.name, url: baseUrl(),
     image: sc.heroImage || undefined, description: "Dental equipment, instruments and supplies for dental professionals in Rawalpindi and Islamabad.",
-    address: { "@type": "PostalAddress", streetAddress: "Shop # F4, Ramzan Plaza, Bank Road, Saddar", addressLocality: "Rawalpindi", addressCountry: "PK" },
-    telephone: isPlaceholder(sc.phone) ? undefined : sc.phone, email: isPlaceholder(sc.email) ? undefined : sc.email,
+    address: { "@type": "PostalAddress", streetAddress: "First Floor, Ramzan Plaza, Bank Rd, Saddar", addressLocality: "Rawalpindi", postalCode: "46000", addressCountry: "PK" },
+    telephone: isPlaceholder(sc.phone) ? undefined : [sc.phone, sc.phone2].filter(Boolean).map(intl), email: isPlaceholder(sc.email) ? undefined : sc.email,
   };
   return (
     <>
       <JsonLd data={ld} />
-      <section className="bg-mist">
-        <div className="container-x grid items-center gap-10 py-16 lg:grid-cols-2 lg:py-24">
-          <div>
-            <p className="text-sm font-semibold tracking-widest text-brand">RIAZ DENTAL SUPPLIES</p>
-            <h1 className="mt-3 text-4xl font-extrabold leading-tight sm:text-5xl">Equipping Dental Professionals for Better Care.</h1>
-            <p className="mt-4 max-w-lg text-lg text-muted">Discover quality dental equipment, instruments and supplies to support modern dental practices.</p>
-            <div className="mt-8 flex flex-wrap gap-3"><Link href="/products" className="btn-primary">Explore Products</Link><Link href="/contact" className="btn-outline">Contact Us</Link></div>
+      <section className="relative isolate overflow-hidden bg-navy">
+        {sc.heroImage && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={sc.heroImage} alt="" fetchPriority="high" className="absolute inset-0 -z-10 h-full w-full object-cover" style={{ opacity: heroOpacity }} />
+        )}
+        <div className="container-x py-24 text-center lg:py-40">
+          <h1 className="text-5xl font-extrabold !text-white [text-shadow:0_2px_14px_rgba(0,0,0,0.45)] sm:text-6xl lg:text-7xl">Riaz Dental Supplies</h1>
+          <p className="mx-auto mt-5 max-w-3xl text-2xl font-semibold text-white [text-shadow:0_2px_12px_rgba(0,0,0,0.45)] sm:text-3xl">Equipping Dental Professionals for Better Care.</p>
+          <p className="mx-auto mt-4 max-w-xl text-lg text-slate-100 [text-shadow:0_2px_12px_rgba(0,0,0,0.45)]">Discover quality dental equipment, instruments and supplies to support modern dental practices.</p>
+          <div className="mt-9 flex flex-wrap justify-center gap-3">
+            <Link href="/products" className="btn-primary">Explore Products</Link>
+            <Link href="/contact" className="btn border border-white text-white hover:bg-white hover:text-navy">Contact Us</Link>
           </div>
-          <Img src={sc.heroImage} alt="Dental equipment" label="Hero photograph placeholder: modern dental equipment" className="aspect-[4/3] w-full rounded-card" eager />
         </div>
       </section>
       <section aria-label="Why customers choose us" className="border-b border-line">
@@ -64,7 +70,7 @@ export default async function Home() {
       </div></section>}
       <section className="py-20"><div className="container-x grid items-center gap-10 lg:grid-cols-2">
         <Img src={sc.aboutImage} alt="Riaz Dental Supplies" label="About photograph placeholder" className="aspect-[4/3] w-full rounded-card" />
-        <div><SectionHeading title="Your Partner in Dental Excellence" /><p className="-mt-6 text-muted">{sc.overview}</p><Link href="/about" className="btn-outline mt-6">Learn More</Link></div>
+        <div><SectionHeading title="Your Partner in Dental Excellence" /><p className="-mt-6 whitespace-pre-line text-muted">{sc.overview}</p><Link href="/about" className="btn-outline mt-6">Learn More</Link></div>
       </div></section>
       <section className="bg-mist py-20"><div className="container-x">
         <SectionHeading center title="Why Choose Us?" />

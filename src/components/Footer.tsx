@@ -4,11 +4,11 @@ import type { SiteContent } from "@/lib/content";
 
 const cols = [
   { title: "Company", links: [["About Us", "/about"], ["Contact Us", "/contact"], ["Products", "/products"], ["Brands", "/brands"]] },
-  { title: "Customer Information", links: [["FAQs", "/#faq"], ["Request a Quote", "/request-quote"], ["Product Enquiries", "/contact"]] },
+  { title: "Customer Information", links: [["Price List", "/price-list"], ["FAQs", "/#faq"], ["Request a Quote", "/request-quote"], ["Product Enquiries", "/contact"]] },
   { title: "Legal", links: [["Privacy Policy", "/privacy-policy"], ["Terms of Use", "/terms-of-use"], ["Terms & Conditions", "/terms-and-conditions"], ["Disclaimer", "/disclaimer"], ["Shipping & Delivery Policy", "/shipping-delivery-policy"], ["Return & Refund Policy", "/return-refund-policy"], ["Cookie Policy", "/cookie-policy"]] },
 ];
 
-export default function Footer({ c }: { c: Pick<SiteContent, "phone" | "email" | "whatsapp"> }) {
+export default function Footer({ c }: { c: Pick<SiteContent, "phone" | "phone2" | "email" | "whatsapp"> }) {
   return (
     <footer className="bg-navy text-slate-300">
       <div className="container-x grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-4">
@@ -27,6 +27,7 @@ export default function Footer({ c }: { c: Pick<SiteContent, "phone" | "email" |
           <address className="space-y-1 text-sm not-italic">
             {site.address.map((l) => <div key={l}>{l}</div>)}
             <div className="pt-2">Phone: {c.phone}</div>
+            {c.phone2 && <div>Phone: {c.phone2}</div>}
             <div>WhatsApp: {c.whatsapp || "to be added"}</div>
             <div>Email: {c.email}</div>
           </address>

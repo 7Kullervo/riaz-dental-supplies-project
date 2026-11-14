@@ -1,7 +1,7 @@
 import { site } from "./site";
 export const LEGAL_UPDATED = "11 November 2026";
 export type Policy = { slug: string; title: string; description: string; sections: { h: string; p: string[] }[] };
-const contact = `Riaz Dental Supplies, ${site.address.join(" ")} Email: ${site.email} [placeholder: owner to confirm]. Phone: ${site.phone} [placeholder: owner to confirm].`;
+const contact = `Riaz Dental Supplies, ${site.address.join(" ")} Email: ${site.email} [placeholder: owner to confirm]. Phone: ${site.phone}, ${site.phone2}.`;
 
 export const policies: Policy[] = [
   { slug: "privacy-policy", title: "Privacy Policy", description: "How Riaz Dental Supplies collects, uses and protects your information.", sections: [

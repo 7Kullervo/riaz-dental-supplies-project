@@ -14,7 +14,7 @@ export default function Header({ categories, announcement }: { categories: { slu
         <Link href="/" className="font-heading text-lg font-extrabold text-navy">
           Riaz <span className="text-brand">Dental</span> Supplies
         </Link>
-        <nav aria-label="Main" className="hidden items-center gap-7 lg:flex">
+        <nav aria-label="Main" className="hidden items-center gap-5 xl:gap-7 lg:flex">
           {navLinks.map((l) =>
             l.mega ? (
               <div key={l.href} className="relative" onMouseEnter={() => setMega(true)} onMouseLeave={() => setMega(false)}>

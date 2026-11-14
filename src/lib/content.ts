@@ -5,25 +5,33 @@ import { demoCategories, demoBrands, demoProducts, demoOffers, type Product, typ
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Row = Record<string, any>;
-export type SiteContent = { announcement: string; overview: string; mission: string; vision: string; phone: string; email: string; whatsapp: string; hours: string; heroImage: string; aboutImage: string; shopImage: string };
+export type SiteContent = { announcement: string; overview: string; mission: string; vision: string; phone: string; phone2: string; email: string; whatsapp: string; hours: string; heroImage: string; aboutImage: string; shopImage: string; heroOpacity: string };
 
 export const usingDemo = () => !getAdmin();
 export const isPlaceholder = (v: string) => /XXX|example\.com|to be confirmed/i.test(v);
 
 const defaults: SiteContent = {
   announcement: site.announcement,
-  overview: "Riaz Dental Supplies provides dental equipment and supplies to dentists, dental clinics, hospitals, students and laboratories. Customers can browse products online, request quotations, or visit the shop in person.",
-  mission: "To help dental professionals access dependable equipment and supplies, with clear information and helpful service.",
-  vision: "To be a trusted local source of dental equipment and supplies for the dental community.",
-  phone: site.phone, email: site.email, whatsapp: site.whatsapp, hours: site.hours,
-  heroImage: "", aboutImage: "", shopImage: "",
+  overview: "We are a professional dental supplies business dedicated to providing quality dental products and materials to dental professionals.\n\nOur goal is to connect dentists, dental clinics, hospitals, and dental laboratories with reliable dental supplies.",
+  mission: "Our mission is to make quality dental products easily accessible to dental professionals by providing reliable supplies, competitive prices, and excellent customer service.",
+  vision: "To become a trusted name in the dental supplies industry by providing quality products, building strong relationships and supporting dental professionals.",
+  phone: site.phone, phone2: site.phone2, email: site.email, whatsapp: site.whatsapp, hours: site.hours,
+  heroImage: "", aboutImage: "", shopImage: "", heroOpacity: "45",
 };
 
+// Earlier default texts. If the database still holds one of these (saved from the form before it was updated),
+// the new default is used instead. Anything the owner wrote themselves is kept.
+const LEGACY = new Set([
+  "+92 XXX XXXXXXX",
+  "Riaz Dental Supplies provides dental equipment and supplies to dentists, dental clinics, hospitals, students and laboratories. Customers can browse products online, request quotations, or visit the shop in person.",
+  "To help dental professionals access dependable equipment and supplies, with clear information and helpful service.",
+  "To be a trusted local source of dental equipment and supplies for the dental community.",
+]);
 export async function getSiteContent(): Promise<SiteContent> {
   const db = getAdmin(); if (!db) return defaults;
   const { data } = await db.from("site_content").select("value").eq("key", "main").maybeSingle();
   const out = { ...defaults };
-  for (const [k, v] of Object.entries((data?.value ?? {}) as Row)) if (k in out && typeof v === "string" && v.trim()) (out as Row)[k] = v;
+  for (const [k, v] of Object.entries((data?.value ?? {}) as Row)) if (k in out && typeof v === "string" && v.trim() && !LEGACY.has(v.trim())) (out as Row)[k] = v;
   return out;
 }
 export async function getCategories(): Promise<Category[]> {

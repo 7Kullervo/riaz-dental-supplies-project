@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ImageIcon } from "lucide-react";
-import { type Product, availabilityLabel } from "@/lib/data";
+import { type Product, availabilityLabel, formatPrice } from "@/lib/data";
 
 export function Placeholder({ label = "Placeholder image", className = "" }: { label?: string; className?: string }) {
   return (
@@ -38,7 +38,7 @@ export function ProductCard({ p }: { p: Product }) {
         </div>
         <h3 className="text-lg font-bold">{p.name}</h3>
         <p className="mt-1 line-clamp-2 text-sm text-muted">{p.description}</p>
-        <p className="mt-3 text-sm font-semibold text-navy">{p.price ? `Rs ${p.price.toLocaleString()}` : "Request a Quote"}</p>
+        <p className="mt-3 text-sm font-semibold text-navy">{p.price ? formatPrice(p.price) : "Request a Quote"}</p>
         <div className="mt-4 flex gap-2 pt-1"><Link href={`/products/${p.slug}`} className="btn-primary flex-1">View Details</Link></div>
         {p.demo && <div className="mt-2"><DemoBadge /></div>}
       </div>

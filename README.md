@@ -1,6 +1,6 @@
 # Riaz Dental Supplies website
 
-A complete website for Riaz Dental Supplies (Shop # F4, Ramzan Plaza, Bank Road, Saddar, Rawalpindi).
+A complete website for Riaz Dental Supplies (First Floor, Ramzan Plaza, Bank Rd, Saddar, Rawalpindi, 46000).
 Built with Next.js 14 (App Router), TypeScript, Tailwind CSS, Lucide icons and Supabase (database, file storage, admin login).
 
 **Includes:** Home, About, Products (search, filters, detail pages), Brands, Offers, Contact, Request a Quote, seven policy pages, and a protected admin dashboard (products, categories, brands, offers, testimonials, enquiries, website content and photos). SEO files (sitemap, robots, structured data) are included.
