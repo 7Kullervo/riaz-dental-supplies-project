@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { requireAdmin } from "@/lib/supabase-auth";
 import { getAdmin } from "@/lib/supabase-server";
+import { waNumber } from "@/lib/phone";
 
 const s = (fd: FormData, k: string, max = 500) => String(fd.get(k) ?? "").trim().slice(0, max);
 const slugify = (t: string) => t.toLowerCase().normalize("NFKD").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 80);
@@ -76,8 +77,6 @@ export async function saveProduct(fd: FormData) {
   if (!name) return done(P, "Product name is required.", false);
   const availability = s(fd, "availability");
   if (!["in-stock", "on-request", "out-of-stock"].includes(availability)) return done(P, "Choose an availability.", false);
-  const priceRaw = s(fd, "price", 20); const price = priceRaw === "" ? null : Number(priceRaw);
-  if (price !== null && (!Number.isFinite(price) || price < 0)) return done(P, "Price must be a positive number, or left empty for 'Request a Quote'.", false);
   const features = s(fd, "features", 4000).split("\n").map((l) => l.trim()).filter(Boolean).slice(0, 30).map((l) => l.slice(0, 200));
   const specs = s(fd, "specs", 4000).split("\n").map((l) => l.trim()).filter(Boolean).slice(0, 40).map((l) => {
     const i = l.indexOf(":"); return i > 0 ? { label: l.slice(0, i).trim().slice(0, 100), value: l.slice(i + 1).trim().slice(0, 300) } : { label: l.slice(0, 100), value: "" };
@@ -92,7 +91,7 @@ export async function saveProduct(fd: FormData) {
   const row: Record<string, unknown> = {
     name, slug: slugify(s(fd, "slug") || name), description: s(fd, "description", 4000) || null,
     brand_slug: s(fd, "brand") || null, category_slug: s(fd, "category") || null,
-    price, availability, features, specs, images, featured: fd.get("featured") === "on",
+    availability, features, specs, images, featured: fd.get("featured") === "on",
   };
   const br = await upload(db, fd.get("brochure"), "brochures", PDF);
   if (br && "error" in br) return done(P, br.error, false);
@@ -140,7 +139,7 @@ export async function deleteTestimonial(fd: FormData) {
 // ---------- site content ----------
 export async function saveContent(fd: FormData) {
   const P = "/admin/content", db = await begin(P);
-  const email = s(fd, "email", 200), whatsapp = s(fd, "whatsapp", 30).replace(/\D/g, "");
+  const email = s(fd, "email", 200), whatsapp = waNumber(s(fd, "whatsapp", 30));
   if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return done(P, "Enter a valid email address.", false);
   if (whatsapp && (whatsapp.length < 8 || whatsapp.length > 15)) return done(P, "WhatsApp number must be 8 to 15 digits with country code, e.g. 923001234567.", false);
   const { data: cur } = await db.from("site_content").select("value").eq("key", "main").maybeSingle();
@@ -148,7 +147,9 @@ export async function saveContent(fd: FormData) {
   const value: Record<string, string> = { announcement: s(fd, "announcement", 200), overview: s(fd, "overview", 1500), mission: s(fd, "mission", 600), vision: s(fd, "vision", 600), phone: s(fd, "phone", 40), phone2: s(fd, "phone2", 40), email, whatsapp, hours: s(fd, "hours", 300) };
   const op = parseInt(s(fd, "hero_opacity", 3), 10);
   value.heroOpacity = String(Number.isNaN(op) ? 45 : Math.min(100, Math.max(0, op)));
-  for (const [field, input] of [["heroImage", "hero_image"], ["aboutImage", "about_image"], ["shopImage", "shop_image"]] as const) {
+  const bop = parseInt(s(fd, "bg_opacity", 3), 10);
+  value.bgOpacity = String(Number.isNaN(bop) ? 20 : Math.min(100, Math.max(0, bop)));
+  for (const [field, input] of [["heroImage", "hero_image"], ["aboutImage", "about_image"], ["shopImage", "shop_image"], ["bgImage", "bg_image"]] as const) {
     const up = await upload(db, fd.get(input), "site", IMG);
     if (up && "error" in up) return done(P, up.error, false);
     value[field] = up ? up.url : fd.get(`remove_${input}`) ? "" : old[field] ?? "";

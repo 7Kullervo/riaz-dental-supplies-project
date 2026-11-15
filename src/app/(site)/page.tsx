@@ -22,6 +22,7 @@ export default async function Home() {
   const [cats, prods, brands, sc, tms] = await Promise.all([getCategories(), getProducts(), getBrands(), getSiteContent(), getTestimonials()]);
   const demo = usingDemo();
   const heroOpacity = (Number.isNaN(Number(sc.heroOpacity)) ? 45 : Math.min(100, Math.max(0, Number(sc.heroOpacity)))) / 100;
+  const bgStrength = (Number.isNaN(Number(sc.bgOpacity)) ? 20 : Math.min(100, Math.max(0, Number(sc.bgOpacity)))) / 100;
   const featured = prods.filter((p) => p.featured).slice(0, 4);
   // Only verified details go into structured data: no ratings, reviews, hours or placeholder contact info.
   const ld = {
@@ -53,6 +54,13 @@ export default async function Home() {
           {trust.map(({ icon: I, t }) => <li key={t} className="flex items-center gap-3 text-sm font-semibold text-navy"><I className="text-teal" size={24} aria-hidden />{t}</li>)}
         </ul>
       </section>
+      <div className="relative isolate">
+        {sc.bgImage && (
+          <>
+            <div aria-hidden className="absolute inset-0 -z-20 bg-cover bg-center md:bg-fixed" style={{ backgroundImage: `url(${JSON.stringify(sc.bgImage)})` }} />
+            <div aria-hidden className="absolute inset-0 -z-10 bg-white" style={{ opacity: 1 - bgStrength }} />
+          </>
+        )}
       {cats.length > 0 && <section className="py-20"><div className="container-x">
         <SectionHeading center title="Explore Our Product Categories" text="Availability of individual items should be confirmed with the shop." />
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
@@ -64,7 +72,7 @@ export default async function Home() {
             </Link>))}
         </div>
       </div></section>}
-      {featured.length > 0 && <section className="bg-mist py-20"><div className="container-x">
+      {featured.length > 0 && <section className={`${sc.bgImage ? "" : "bg-mist"} py-20`}><div className="container-x">
         <SectionHeading title="Explore Our Featured Products" text={demo ? "Placeholder products shown for demonstration until the real inventory is added." : undefined} />
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">{featured.map((p) => <ProductCard key={p.slug} p={p} />)}</div>
       </div></section>}
@@ -72,6 +80,7 @@ export default async function Home() {
         <Img src={sc.aboutImage} alt="Riaz Dental Supplies" label="About photograph placeholder" className="aspect-[4/3] w-full rounded-card" />
         <div><SectionHeading title="Your Partner in Dental Excellence" /><p className="-mt-6 whitespace-pre-line text-muted">{sc.overview}</p><Link href="/about" className="btn-outline mt-6">Learn More</Link></div>
       </div></section>
+      </div>
       <section className="bg-mist py-20"><div className="container-x">
         <SectionHeading center title="Why Choose Us?" />
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">{why.map(([t, d]) => <div key={t} className="rounded-card border border-line bg-white p-6 shadow-card"><h3 className="font-bold">{t}</h3><p className="mt-2 text-sm text-muted">{d}</p></div>)}</div>

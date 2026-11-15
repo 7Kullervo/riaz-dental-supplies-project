@@ -3,6 +3,8 @@ import { requireAdmin } from "@/lib/supabase-auth";
 import { getAdmin } from "@/lib/supabase-server";
 import { saveProduct, deleteProduct } from "../../content-actions";
 import { Flash, NoDb, Lbl, DeleteForm, inp, card, type SP } from "@/components/AdminUI";
+import { UploadField, tips } from "@/components/UploadField";
+import ImageInput from "@/components/ImageInput";
 
 export const dynamic = "force-dynamic";
 export default async function Page({ searchParams }: { searchParams: SP }) {
@@ -27,19 +29,18 @@ export default async function Page({ searchParams }: { searchParams: SP }) {
           <Lbl t="Category"><select name="category" defaultValue={cur?.category_slug ?? ""} className={inp}><option value="">None</option>{(cats ?? []).map((c) => <option key={c.slug} value={c.slug}>{c.name}</option>)}</select></Lbl>
           <Lbl t="Brand"><select name="brand" defaultValue={cur?.brand_slug ?? ""} className={inp}><option value="">None</option>{(brands ?? []).map((b) => <option key={b.slug} value={b.slug}>{b.name}</option>)}</select></Lbl>
           <Lbl t="Availability"><select name="availability" defaultValue={cur?.availability ?? "on-request"} className={inp}><option value="in-stock">In Stock</option><option value="on-request">Available on Request</option><option value="out-of-stock">Out of Stock</option></select></Lbl>
-          <Lbl t="Price (PKR)" hint="Leave empty to show “Request a Quote”."><input name="price" type="number" min="0" step="0.01" defaultValue={cur?.price ?? ""} className={inp} /></Lbl>
         </div>
         <Lbl t="Description"><textarea name="description" rows={4} defaultValue={cur?.description ?? ""} className={inp} /></Lbl>
         <Lbl t="Features and benefits" hint="One per line."><textarea name="features" rows={4} defaultValue={(cur?.features ?? []).join("\n")} className={inp} /></Lbl>
         <Lbl t="Technical specifications" hint="One per line, as  Label: value  (for example  Voltage: 220 V)."><textarea name="specs" rows={5} defaultValue={specsText} className={inp} /></Lbl>
         <label className="flex items-center gap-2 text-sm font-semibold"><input type="checkbox" name="featured" defaultChecked={!!cur?.featured} />Show on the homepage as a featured product</label>
-        <fieldset className="space-y-2"><legend className="text-sm font-semibold">Images (up to 6; JPG, PNG or WebP, max 4 MB each)</legend>
+        <UploadField title="Images (up to 6)" tip={tips.productImages}><div className="space-y-2">
           {(cur?.images ?? []).length > 0 && <div className="flex flex-wrap gap-3">{(cur?.images as string[]).map((u) => (
             <label key={u} className="text-xs"><img src={u} alt="" className="h-20 w-20 rounded-lg object-cover" /><span className="mt-1 flex items-center gap-1"><input type="checkbox" name="keep_image" value={u} defaultChecked />Keep</span></label>))}</div>}
-          <input name="images" type="file" multiple accept="image/jpeg,image/png,image/webp" className="block text-sm" /></fieldset>
-        <Lbl t="Brochure / technical PDF (max 4 MB)">
+          <ImageInput name="images" label="Product images" multiple /></div></UploadField>
+        <UploadField title="Brochure / technical PDF" tip={tips.brochure}>
           {cur?.brochure_url && <a href={cur.brochure_url} target="_blank" rel="noopener noreferrer" className="mt-1 block text-xs text-brand underline">Current brochure</a>}
-          <input name="brochure" type="file" accept="application/pdf" className="mt-1 block text-sm" /></Lbl>
+          <input name="brochure" type="file" accept="application/pdf" aria-label="Brochure PDF" className="mt-1 block text-sm font-normal" /></UploadField>
         {cur?.brochure_url && <label className="flex items-center gap-2 text-sm"><input type="checkbox" name="remove_brochure" />Remove current brochure</label>}
         <div className="flex gap-2"><button className="btn-primary">Save product</button>{cur && <Link href="/admin/products" className="btn-outline">Cancel</Link>}</div>
       </form>

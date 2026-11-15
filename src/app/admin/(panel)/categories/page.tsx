@@ -3,6 +3,8 @@ import { requireAdmin } from "@/lib/supabase-auth";
 import { getAdmin } from "@/lib/supabase-server";
 import { saveCategory, deleteCategory } from "../../content-actions";
 import { Flash, NoDb, Lbl, DeleteForm, inp, card, type SP } from "@/components/AdminUI";
+import { UploadField, tips } from "@/components/UploadField";
+import ImageInput from "@/components/ImageInput";
 
 export const dynamic = "force-dynamic";
 export default async function Page({ searchParams }: { searchParams: SP }) {
@@ -21,9 +23,9 @@ export default async function Page({ searchParams }: { searchParams: SP }) {
         <Lbl t="URL name (slug)" hint="Optional. Created from the name if left empty."><input name="slug" defaultValue={cur?.slug} className={inp} /></Lbl>
         <Lbl t="Short description"><textarea name="description" rows={2} defaultValue={cur?.description ?? ""} className={inp} /></Lbl>
         <Lbl t="Display order" hint="Smaller numbers appear first."><input name="sort_order" type="number" defaultValue={cur?.sort_order ?? 0} className={inp} /></Lbl>
-        <Lbl t="Image (JPG, PNG or WebP, max 4 MB)">
+        <UploadField title="Image" tip={tips.image}>
           {cur?.image_url && <img src={cur.image_url} alt="" className="mt-1 h-20 rounded-lg object-cover" />}
-          <input name="image" type="file" accept="image/jpeg,image/png,image/webp" className="mt-1 block text-sm" /></Lbl>
+          <ImageInput name="image" label="Category image" /></UploadField>
         {cur?.image_url && <label className="flex items-center gap-2 text-sm"><input type="checkbox" name="remove_image" />Remove current image</label>}
         <div className="flex gap-2"><button className="btn-primary">Save category</button>{cur && <Link href="/admin/categories" className="btn-outline">Cancel</Link>}</div>
       </form>

@@ -1,11 +1,12 @@
 import "server-only";
 import { getAdmin } from "./supabase-server";
 import { site } from "./site";
+import { waNumber } from "./phone";
 import { demoCategories, demoBrands, demoProducts, demoOffers, type Product, type Brand, type Category, type Offer } from "./data";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Row = Record<string, any>;
-export type SiteContent = { announcement: string; overview: string; mission: string; vision: string; phone: string; phone2: string; email: string; whatsapp: string; hours: string; heroImage: string; aboutImage: string; shopImage: string; heroOpacity: string };
+export type SiteContent = { announcement: string; overview: string; mission: string; vision: string; phone: string; phone2: string; email: string; whatsapp: string; hours: string; heroImage: string; aboutImage: string; shopImage: string; heroOpacity: string; bgImage: string; bgOpacity: string };
 
 export const usingDemo = () => !getAdmin();
 export const isPlaceholder = (v: string) => /XXX|example\.com|to be confirmed/i.test(v);
@@ -16,7 +17,7 @@ const defaults: SiteContent = {
   mission: "Our mission is to make quality dental products easily accessible to dental professionals by providing reliable supplies, competitive prices, and excellent customer service.",
   vision: "To become a trusted name in the dental supplies industry by providing quality products, building strong relationships and supporting dental professionals.",
   phone: site.phone, phone2: site.phone2, email: site.email, whatsapp: site.whatsapp, hours: site.hours,
-  heroImage: "", aboutImage: "", shopImage: "", heroOpacity: "45",
+  heroImage: "", aboutImage: "", shopImage: "", heroOpacity: "45", bgImage: "", bgOpacity: "20",
 };
 
 // Earlier default texts. If the database still holds one of these (saved from the form before it was updated),
@@ -32,6 +33,7 @@ export async function getSiteContent(): Promise<SiteContent> {
   const { data } = await db.from("site_content").select("value").eq("key", "main").maybeSingle();
   const out = { ...defaults };
   for (const [k, v] of Object.entries((data?.value ?? {}) as Row)) if (k in out && typeof v === "string" && v.trim() && !LEGACY.has(v.trim())) (out as Row)[k] = v;
+  out.whatsapp = waNumber(out.whatsapp);
   return out;
 }
 export async function getCategories(): Promise<Category[]> {
@@ -53,7 +55,7 @@ export async function getProducts(): Promise<Product[]> {
   return (data as Row[]).map((r) => ({
     slug: r.slug, name: r.name, brand: r.brand_slug ?? "", brandName: brands.find((b) => b.slug === r.brand_slug)?.name ?? "",
     category: r.category_slug ?? "", categoryName: cats.find((c) => c.slug === r.category_slug)?.name ?? "",
-    description: r.description ?? "", price: r.price != null ? Number(r.price) : undefined, availability: r.availability,
+    description: r.description ?? "", availability: r.availability,
     features: r.features ?? [], specs: (r.specs ?? []).map((s: Row) => [s.label, s.value] as [string, string]),
     images: r.images ?? [], brochureUrl: r.brochure_url ?? undefined, featured: !!r.featured,
   }));

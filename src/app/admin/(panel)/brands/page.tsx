@@ -3,6 +3,8 @@ import { requireAdmin } from "@/lib/supabase-auth";
 import { getAdmin } from "@/lib/supabase-server";
 import { saveBrand, deleteBrand } from "../../content-actions";
 import { Flash, NoDb, Lbl, DeleteForm, inp, card, type SP } from "@/components/AdminUI";
+import { UploadField, tips } from "@/components/UploadField";
+import ImageInput from "@/components/ImageInput";
 
 export const dynamic = "force-dynamic";
 export default async function Page({ searchParams }: { searchParams: SP }) {
@@ -21,9 +23,9 @@ export default async function Page({ searchParams }: { searchParams: SP }) {
         <Lbl t="Brand name *"><input name="name" required defaultValue={cur?.name} className={inp} /></Lbl>
         <Lbl t="URL name (slug)" hint="Optional. Created from the name if left empty."><input name="slug" defaultValue={cur?.slug} className={inp} /></Lbl>
         <Lbl t="Description"><textarea name="description" rows={3} defaultValue={cur?.description ?? ""} className={inp} /></Lbl>
-        <Lbl t="Logo (JPG, PNG or WebP, max 4 MB)">
+        <UploadField title="Logo" tip={tips.logo}>
           {cur?.logo_url && <img src={cur.logo_url} alt="" className="mt-1 h-16 rounded-lg object-contain" />}
-          <input name="logo" type="file" accept="image/jpeg,image/png,image/webp" className="mt-1 block text-sm" /></Lbl>
+          <ImageInput name="logo" label="Brand logo" /></UploadField>
         {cur?.logo_url && <label className="flex items-center gap-2 text-sm"><input type="checkbox" name="remove_logo" />Remove current logo</label>}
         <div className="flex gap-2"><button className="btn-primary">Save brand</button>{cur && <Link href="/admin/brands" className="btn-outline">Cancel</Link>}</div>
       </form>
