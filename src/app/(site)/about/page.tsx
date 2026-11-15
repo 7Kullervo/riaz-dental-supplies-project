@@ -12,7 +12,6 @@ export const revalidate = 60;
 
 const offer = ["Dental Instruments", "Dental Filling Materials", "Composite & Bonding Agents", "Endodontic Materials", "Dental Consumables", "Sterilization Products", "Dental Equipment & Accessories", "Infection Control Products", "Orthodontic Material & Equipment"];
 const why = ["Quality Dental Products", "Competitive Prices", "Wide Range of Dental Materials", "Reliable Customer Support", "Professional Service", "Customer Satisfaction"];
-const serve = ["Dentists", "Dental Clinics", "Dental Hospitals", "Dental Surgeons", "Dental Laboratories", "Dental Students", "Dental Professionals"];
 
 function Checklist({ items, white = false }: { items: string[]; white?: boolean }) {
   return (
@@ -55,11 +54,6 @@ export default async function About() {
       <section className="bg-mist py-16"><div className="container-x">
         <SectionHeading title="Why Choose Us" />
         <Checklist items={why} />
-      </div></section>
-
-      <section className="py-16"><div className="container-x">
-        <SectionHeading title="Who We Serve" text="We proudly serve:" />
-        <Checklist items={serve} white />
       </div></section>
 
       <section className="bg-mist py-16"><div className="container-x max-w-3xl text-center">
