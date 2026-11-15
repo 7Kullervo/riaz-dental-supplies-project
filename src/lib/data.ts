@@ -4,7 +4,7 @@ import { categories as seedCats } from "./site";
 export type Availability = "in-stock" | "on-request" | "out-of-stock";
 export type Product = {
   slug: string; name: string; brand: string; brandName: string; category: string; categoryName: string;
-  description: string; price?: number; availability: Availability; features: string[]; specs: [string, string][];
+  description: string; availability: Availability; features: string[]; specs: [string, string][];
   images: string[]; brochureUrl?: string; featured?: boolean; demo?: boolean;
 };
 export type Brand = { slug: string; name: string; description: string; logoUrl?: string };
@@ -50,5 +50,3 @@ export const demoOffers: Offer[] = [
   { id: "2", title: "Demonstration Offer: Consumables", description: "Placeholder offer. No real discount is implied.", expires: "2027-12-31", productSlug: "demo-composite-material" },
 ];
 
-// Fixed locale so the server and the browser always print prices identically (avoids hydration mismatches).
-export const formatPrice = (n: number) => `Rs ${n.toLocaleString("en-US")}`;

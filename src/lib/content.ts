@@ -1,7 +1,7 @@
 import "server-only";
 import { getAdmin } from "./supabase-server";
 import { site } from "./site";
-import { intl  } from "./phone";
+import { waNumber } from "./phone";
 import { demoCategories, demoBrands, demoProducts, demoOffers, type Product, type Brand, type Category, type Offer } from "./data";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -33,7 +33,7 @@ export async function getSiteContent(): Promise<SiteContent> {
   const { data } = await db.from("site_content").select("value").eq("key", "main").maybeSingle();
   const out = { ...defaults };
   for (const [k, v] of Object.entries((data?.value ?? {}) as Row)) if (k in out && typeof v === "string" && v.trim() && !LEGACY.has(v.trim())) (out as Row)[k] = v;
-  out.whatsapp = intl(out.whatsapp);
+  out.whatsapp = waNumber(out.whatsapp);
   return out;
 }
 export async function getCategories(): Promise<Category[]> {

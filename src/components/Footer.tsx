@@ -4,7 +4,7 @@ import type { SiteContent } from "@/lib/content";
 
 const cols = [
   { title: "Company", links: [["About Us", "/about"], ["Contact Us", "/contact"], ["Products", "/products"], ["Brands", "/brands"]] },
-  { title: "Customer Information", links: [["Price List", "/price-list"], ["FAQs", "/#faq"], ["Request a Quote", "/request-quote"], ["Product Enquiries", "/contact"]] },
+  { title: "Customer Information", links: [["FAQs", "/#faq"], ["Request a Quote", "/request-quote"], ["Product Enquiries", "/contact"]] },
   { title: "Legal", links: [["Privacy Policy", "/privacy-policy"], ["Terms of Use", "/terms-of-use"], ["Terms & Conditions", "/terms-and-conditions"], ["Disclaimer", "/disclaimer"], ["Shipping & Delivery Policy", "/shipping-delivery-policy"], ["Return & Refund Policy", "/return-refund-policy"], ["Cookie Policy", "/cookie-policy"]] },
 ];
 

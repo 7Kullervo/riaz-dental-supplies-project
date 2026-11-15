@@ -28,9 +28,9 @@ export const policies: Policy[] = [
   { slug: "terms-and-conditions", title: "Terms & Conditions", description: "Terms that apply to enquiries, quotations and purchases from Riaz Dental Supplies.", sections: [
     { h: "1. Product descriptions", p: ["We aim to describe products accurately, but images are illustrative and manufacturers may change specifications without notice."] },
     { h: "2. Product availability", p: ["Availability shown on the website is indicative. Items may be unavailable or available only on request. We will confirm availability in our reply to your enquiry."] },
-    { h: "3. Pricing", p: ["Prices, where shown, are in Pakistani Rupees (PKR) and may change without notice. Where no price is shown, please request a quote. [Owner: confirm whether prices include taxes.]"] },
+    { h: "3. Pricing", p: ["Prices are not displayed on this website. Please visit our shop or contact us for current prices. Prices may change without notice and are confirmed at the time of sale. [Owner: confirm whether prices include taxes.]"] },
     { h: "4. Quotations", p: ["A quotation is an offer valid for the period stated in it. [Owner: set a default validity period, for example X days.] Submitting a quote request does not create a purchase contract."] },
-    { h: "5. Order confirmation", p: ["An order is only confirmed when we confirm it to you in writing or in person. We may decline or cancel an order, for example if an item is unavailable or a price was shown in error."] },
+    { h: "5. Order confirmation", p: ["An order is only confirmed when we confirm it to you in writing or in person. We may decline or cancel an order, for example if an item is unavailable."] },
     { h: "6. Payments", p: ["Accepted payment methods and payment timing will be stated in the quotation or order confirmation. [Owner: list accepted payment methods and any advance payment requirements.]"] },
     { h: "7. Customer responsibilities", p: ["You are responsible for giving accurate details, for confirming that a product suits your clinical or professional needs, and for any licences or approvals needed to buy or use the product."] },
     { h: "8. Disputes", p: ["We encourage you to contact us first so we can try to resolve any problem. Disputes are governed by the applicable laws of Pakistan. [Owner: confirm jurisdiction and dispute process.]"] },

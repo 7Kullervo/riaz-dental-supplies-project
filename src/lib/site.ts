@@ -23,6 +23,6 @@ export const categories = [
 ];
 export const navLinks = [
   { href: "/", label: "Home" }, { href: "/about", label: "About Us" },
-  { href: "/products", label: "Products", mega: true }, { href: "/price-list", label: "Price List" }, { href: "/brands", label: "Brands" },
+  { href: "/products", label: "Products", mega: true }, { href: "/brands", label: "Brands" },
   { href: "/offers", label: "Offers" }, { href: "/contact", label: "Contact Us" },
 ];
