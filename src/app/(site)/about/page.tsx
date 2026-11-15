@@ -27,6 +27,7 @@ function Checklist({ items, white = false }: { items: string[]; white?: boolean 
 
 export default async function About() {
   const sc = await getSiteContent();
+  const bannerStrength = (Number.isNaN(Number(sc.bannerOpacity)) ? 40 : Math.min(100, Math.max(0, Number(sc.bannerOpacity)))) / 100;
   return (
     <>
       <section className="bg-mist py-20">
@@ -56,11 +57,20 @@ export default async function About() {
         <Checklist items={why} />
       </div></section>
 
-      <section className="bg-mist py-16"><div className="container-x max-w-3xl text-center">
+      <section className="relative isolate overflow-hidden bg-navy py-24 text-center sm:py-32">
+        {sc.bannerImage && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={sc.bannerImage} alt="" loading="lazy" className="absolute inset-0 -z-10 h-full w-full object-cover" style={{ opacity: bannerStrength }} />
+        )}
+        <p className="container-x mx-auto max-w-3xl text-2xl font-semibold text-white [text-shadow:0_2px_12px_rgba(0,0,0,0.45)] sm:text-4xl">Equipping Dental Professionals for Better Care.</p>
+      </section>
+
+
+      <section className="py-16"><div className="container-x max-w-3xl text-center">
         <h2 className="text-3xl font-extrabold">Our Vision</h2><p className="mt-4 text-lg text-muted">{sc.vision}</p>
       </div></section>
 
-      <section className="py-16"><div className="container-x grid items-center gap-10 lg:grid-cols-2">
+      <section className="bg-mist py-16"><div className="container-x grid items-center gap-10 lg:grid-cols-2">
         <div>
           <h2 className="text-3xl font-extrabold">Visit or Call Us</h2>
           <address className="mt-4 flex gap-3 not-italic text-ink"><MapPin className="mt-1 shrink-0 text-brand" aria-hidden />
@@ -72,7 +82,7 @@ export default async function About() {
         <ShopMap className="h-80" />
       </div></section>
 
-      <section className="bg-mist py-16 text-center"><div className="container-x"><h2 className="text-3xl font-extrabold">Have a question or need a quote?</h2>
+      <section className="py-16 text-center"><div className="container-x"><h2 className="text-3xl font-extrabold">Have a question or need a quote?</h2>
         <div className="mt-6 flex flex-wrap justify-center gap-3"><Link href="/contact" className="btn-outline">Contact Us</Link><Link href="/request-quote" className="btn-primary">Request a Quote</Link></div></div></section>
     </>
   );

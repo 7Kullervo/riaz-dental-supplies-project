@@ -45,6 +45,12 @@ export const tips = {
     "Formats: JPG, PNG or WebP. Any size up to 20 MB: large photos are shrunk for you.",
     "Use the slider below to make it stronger or softer. A low setting keeps the text easy to read.",
   ]} />,
+  banner: <List items={[
+    "A wide landscape photo, at least 1600 px wide.",
+    "It shows as a band across the About Us page, between Why Choose Us and Our Vision, with the tagline over it.",
+    "Formats: JPG, PNG or WebP. Any size up to 20 MB: large photos are shrunk for you.",
+    "Use the slider below to make the photo stronger or softer. Lower it if the white text is hard to read.",
+  ]} />,
   site: <List items={[
     "Formats: JPG, PNG or WebP. Any size up to 20 MB: large photos are shrunk for you automatically.",
     "Best results: a clear, well-lit landscape photo at least 1200 px wide.",

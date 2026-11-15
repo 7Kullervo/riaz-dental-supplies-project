@@ -6,7 +6,7 @@ import { demoCategories, demoBrands, demoProducts, demoOffers, type Product, typ
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Row = Record<string, any>;
-export type SiteContent = { announcement: string; overview: string; mission: string; vision: string; phone: string; phone2: string; email: string; whatsapp: string; hours: string; heroImage: string; aboutImage: string; shopImage: string; heroOpacity: string; bgImage: string; bgOpacity: string };
+export type SiteContent = { announcement: string; overview: string; mission: string; vision: string; phone: string; phone2: string; email: string; whatsapp: string; hours: string; heroImage: string; aboutImage: string; shopImage: string; heroOpacity: string; bgImage: string; bgOpacity: string; bannerImage: string; bannerOpacity: string };
 
 export const usingDemo = () => !getAdmin();
 export const isPlaceholder = (v: string) => /XXX|example\.com|to be confirmed/i.test(v);
@@ -17,7 +17,7 @@ const defaults: SiteContent = {
   mission: "Our mission is to make quality dental products easily accessible to dental professionals by providing reliable supplies, competitive prices, and excellent customer service.",
   vision: "To become a trusted name in the dental supplies industry by providing quality products, building strong relationships and supporting dental professionals.",
   phone: site.phone, phone2: site.phone2, email: site.email, whatsapp: site.whatsapp, hours: site.hours,
-  heroImage: "", aboutImage: "", shopImage: "", heroOpacity: "45", bgImage: "", bgOpacity: "20",
+  heroImage: "", aboutImage: "", shopImage: "", heroOpacity: "45", bgImage: "", bgOpacity: "20", bannerImage: "", bannerOpacity: "40",
 };
 
 // Earlier default texts. If the database still holds one of these (saved from the form before it was updated),

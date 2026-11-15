@@ -9,7 +9,6 @@ export default function ProductsClient({ products, brands, categories }: { produ
   const router = useRouter();
   const q = sp.get("q") ?? "", category = sp.get("category") ?? "", brand = sp.get("brand") ?? "";
   const avail = sp.get("availability") ?? "", sort = sp.get("sort") ?? "featured";
-  const min = sp.get("min") ?? "", max = sp.get("max") ?? "";
 
   const set = (k: string, v: string) => {
     const p = new URLSearchParams(sp.toString());
@@ -21,12 +20,11 @@ export default function ProductsClient({ products, brands, categories }: { produ
     const t = q.trim().toLowerCase();
     let r = products.filter((p) =>
       (!t || `${p.name} ${p.description}`.toLowerCase().includes(t)) &&
-      (!category || p.category === category) && (!brand || p.brand === brand) && (!avail || p.availability === avail)
-    );
+      (!category || p.category === category) && (!brand || p.brand === brand) && (!avail || p.availability === avail));
     if (sort === "name-asc") r = [...r].sort((a, b) => a.name.localeCompare(b.name));
     if (sort === "name-desc") r = [...r].sort((a, b) => b.name.localeCompare(a.name));
     return r;
-  }, [products, q, category, brand, avail, sort, min, max]);
+  }, [products, q, category, brand, avail, sort]);
 
   const field = "w-full rounded-lg border border-line bg-white px-3 py-2.5 text-sm";
   return (

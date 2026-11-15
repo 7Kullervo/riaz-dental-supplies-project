@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { requireAdmin } from "@/lib/supabase-auth";
 import { getAdmin } from "@/lib/supabase-server";
-import { intl } from "@/lib/phone";
+import { waNumber } from "@/lib/phone";
 
 const s = (fd: FormData, k: string, max = 500) => String(fd.get(k) ?? "").trim().slice(0, max);
 const slugify = (t: string) => t.toLowerCase().normalize("NFKD").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 80);
@@ -139,7 +139,7 @@ export async function deleteTestimonial(fd: FormData) {
 // ---------- site content ----------
 export async function saveContent(fd: FormData) {
   const P = "/admin/content", db = await begin(P);
-  const email = s(fd, "email", 200), whatsapp = intl(s(fd, "whatsapp", 30)).replace(/^\+/, "");
+  const email = s(fd, "email", 200), whatsapp = waNumber(s(fd, "whatsapp", 30));
   if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return done(P, "Enter a valid email address.", false);
   if (whatsapp && (whatsapp.length < 8 || whatsapp.length > 15)) return done(P, "WhatsApp number must be 8 to 15 digits with country code, e.g. 923001234567.", false);
   const { data: cur } = await db.from("site_content").select("value").eq("key", "main").maybeSingle();
@@ -149,7 +149,9 @@ export async function saveContent(fd: FormData) {
   value.heroOpacity = String(Number.isNaN(op) ? 45 : Math.min(100, Math.max(0, op)));
   const bop = parseInt(s(fd, "bg_opacity", 3), 10);
   value.bgOpacity = String(Number.isNaN(bop) ? 20 : Math.min(100, Math.max(0, bop)));
-  for (const [field, input] of [["heroImage", "hero_image"], ["aboutImage", "about_image"], ["shopImage", "shop_image"], ["bgImage", "bg_image"]] as const) {
+  const nop = parseInt(s(fd, "banner_opacity", 3), 10);
+  value.bannerOpacity = String(Number.isNaN(nop) ? 40 : Math.min(100, Math.max(0, nop)));
+  for (const [field, input] of [["heroImage", "hero_image"], ["aboutImage", "about_image"], ["shopImage", "shop_image"], ["bgImage", "bg_image"], ["bannerImage", "banner_image"]] as const) {
     const up = await upload(db, fd.get(input), "site", IMG);
     if (up && "error" in up) return done(P, up.error, false);
     value[field] = up ? up.url : fd.get(`remove_${input}`) ? "" : old[field] ?? "";
