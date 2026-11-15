@@ -9,7 +9,6 @@ export default function ProductsClient({ products, brands, categories }: { produ
   const router = useRouter();
   const q = sp.get("q") ?? "", category = sp.get("category") ?? "", brand = sp.get("brand") ?? "";
   const avail = sp.get("availability") ?? "", sort = sp.get("sort") ?? "featured";
-  const hasPrices = products.some((p) => p.price !== undefined);
   const min = sp.get("min") ?? "", max = sp.get("max") ?? "";
 
   const set = (k: string, v: string) => {
@@ -22,8 +21,8 @@ export default function ProductsClient({ products, brands, categories }: { produ
     const t = q.trim().toLowerCase();
     let r = products.filter((p) =>
       (!t || `${p.name} ${p.description}`.toLowerCase().includes(t)) &&
-      (!category || p.category === category) && (!brand || p.brand === brand) && (!avail || p.availability === avail) &&
-      (!min || (p.price ?? 0) >= Number(min)) && (!max || (p.price !== undefined && p.price <= Number(max))));
+      (!category || p.category === category) && (!brand || p.brand === brand) && (!avail || p.availability === avail)
+    );
     if (sort === "name-asc") r = [...r].sort((a, b) => a.name.localeCompare(b.name));
     if (sort === "name-desc") r = [...r].sort((a, b) => b.name.localeCompare(a.name));
     return r;
@@ -44,11 +43,6 @@ export default function ProductsClient({ products, brands, categories }: { produ
         <label className="block text-sm font-semibold">Availability
           <select value={avail} onChange={(e) => set("availability", e.target.value)} className={`${field} mt-1 font-normal`}>
             <option value="">Any</option><option value="in-stock">In Stock</option><option value="on-request">Available on Request</option><option value="out-of-stock">Out of Stock</option></select></label>
-        {hasPrices && (
-          <div className="grid grid-cols-2 gap-2 text-sm font-semibold">
-            <label>Min price<input type="number" min="0" defaultValue={min} onChange={(e) => set("min", e.target.value)} className={`${field} mt-1 font-normal`} /></label>
-            <label>Max price<input type="number" min="0" defaultValue={max} onChange={(e) => set("max", e.target.value)} className={`${field} mt-1 font-normal`} /></label>
-          </div>)}
         <label className="block text-sm font-semibold">Sort by
           <select value={sort} onChange={(e) => set("sort", e.target.value)} className={`${field} mt-1 font-normal`}>
             <option value="featured">Featured</option><option value="name-asc">Name A to Z</option><option value="name-desc">Name Z to A</option></select></label>
